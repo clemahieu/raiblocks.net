@@ -1,0 +1,46 @@
+<nav>
+	<div class="navbar-header">
+		<h3 class="text-muted pull-left">
+			<a ng-click="openPage('home')">RaiBlocks.net</a>
+		</h3>
+		<button type="button" class="navbar-toggle collapsed pull-right" data-toggle="collapse" data-target=".navbar-collapse">
+			<i class="fa fa-reorder fa-2x"></i>
+		</button>
+		
+	</div>
+
+	<div class="navbar-collapse collapse pull-right">
+
+		<!-- Navigation -->
+		<ul class="nav nav-pills">
+			<li ng-class="{'active': page === 'start'}">
+				<a ng-click="openPage('start')">
+					<i class="fa fa-check-circle fa-xs"></i>&nbsp;Start
+				</a>
+			</li>
+			<li ng-class="{'active': page === 'faucet'}">
+				<a ng-click="openPage('faucet')">
+					<i class="fa fa-cubes fa-xs"></i>&nbsp;Get Blocks
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="https://github.com/clemahieu/raiblocks/wiki">
+					<i class="fa fa-info-circle fa-xs"></i>&nbsp;Info
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="https://groups.google.com/forum/#!forum/raiblocks">
+					<i class="fa fa-commenting fa-xs"></i>&nbsp;Discussion
+				</a>
+			</li>
+			<li>
+				<a target="_blank" href="https://github.com/clemahieu/raiblocks">
+					<i class="fa fa-code fa-xs"></i>&nbsp;Devs
+				</a>
+			</li>
+		</ul>
+		<!-- end navigation -->
+		
+	</div>
+	<br style="clear:both;"/>
+</nav>

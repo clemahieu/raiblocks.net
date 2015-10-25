@@ -1,0 +1,36 @@
+<!-- <div ng-cloak ng-show="singleUnitPrice === 0"> -->
+<div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+
+			<h1>Request Rai blocks</h1>
+
+			<form ng-submit="freeCtrl.submit()">
+
+				<!-- account id -->
+				<input class="form-control" type="text" ng-model="account_id3" placeholder="Account #" autocomplete="off" />
+
+				<br style="clear:both"/>
+
+				<!-- recaptcha -->
+				<div
+				vc-recaptcha
+				theme="'light'"
+				key="recaptchaKey"
+				on-create="setWidgetId3(widgetId)"
+				on-success="setResponse3(response)"></div>
+
+				<br style="clear:both"/>
+
+				<!-- submission button -->
+				<button
+				ng-disabled="free.active.disabled == true"
+				ng-class="free.active.class"
+				class="btn btn-block"
+				type="submit">
+					<i ng-class="free.active.icon" class="fa"></i>&nbsp;{{ free.active.title }}
+				</button>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,253 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+
+		<!-- loading -->
+		<!--
+		<div ng-cloak ng-show="singleUnitPrice === undefined" class="row">
+			<div class="col-xs-12">
+				<h1>Loading Prices ... <i class="fa fa-spin fa-spinner"></i></h1>
+			</div>
+		</div>
+		-->
+
+		<!-- price greater than 0 -->
+		<div ng-cloak ng-show="singleUnitPrice > 0">
+
+			<!-- no BTC receiver address? normal view -->
+			<div ng-cloak ng-show="receiver === undefined || countdown <= 0">
+
+				<!-- page title -->
+				<div class="row">
+					<div class="col-xs-12">
+						<h1>Purchase</h1>
+					</div>
+				</div>
+
+				<br style="clear:both;"/>
+
+				<!-- amount & price inputs -->
+				<div class="row">
+
+					<!-- Grai label -->
+					<div class="col-xs-2">
+						<span style="font-size: 120%; width:100%; text-align:right; margin-top:4px;" class="pull-right">Grai:</span>
+					</div>
+
+					<!-- Price check input -->
+					<div class="col-xs-4">
+						<input ng-model="enteredAmount" placeholder="Quantity" type="number" min="0" class="form-control pull-left" maxlength="4" />
+					</div>
+
+					<!-- Price label -->
+					<div class="col-xs-2">
+						<span style="font-size: 120%; width:100%; text-align:right; margin-top:4px;" class="pull-right">USD:</span>
+					</div>
+
+					<!-- Price check display -->
+					<div class="col-xs-4">
+
+						<!-- typing -->
+						<div
+						ng-cloak
+						ng-show="checkingPrice === false && pricingError === undefined && userTyping === true"
+						class="alert alert-info" 
+						role="alert">
+							<i class="fa fa-keyboard-o"></i>
+						</div>
+
+						<!-- checking -->
+						<div
+						ng-cloak
+						ng-show="checkingPrice === true"
+						class="alert alert-warning" 
+						role="alert">
+							<i class="fa fa-spin fa-spinner"></i>
+						</div>
+
+						<!-- USD price -->
+						<div
+						ng-cloak
+						ng-show="checkingPrice === false && pricingError === undefined && userTyping === false"
+						class="alert alert-info" 
+						role="alert">
+							<strong><i class="fa fa-usd"></i>&nbsp;{{ price | number:2 }}</strong>
+						</div>
+
+					</div>
+				</div>
+
+				<br style="clear:both;"/>
+
+				<!-- default message -->
+				<div ng-cloak ng-show="( enteredAmount === null || enteredAmount === undefined ) && userTyping === false && pricingError === undefined && checkingPrice === false">
+					<div class="alert alert-success" role="alert">
+						Enter an amount for a price
+					</div>
+					<br style="clear:both;"/>
+				</div>
+
+				<!-- user typing message -->
+				<div ng-cloak ng-show="checkingPrice === false && pricingError === undefined && userTyping === true">
+					<div class="alert alert-info" role="alert">
+						Typing ...
+					</div>
+					<br style="clear:both;"/>
+				</div>
+
+				<!-- checking price -->
+				<div ng-cloak ng-show="checkingPrice === true">
+					<div class="alert alert-warning" role="alert">
+						Checking price ...
+					</div>
+					<br style="clear:both;"/>
+				</div>
+
+				<!-- pricing errors -->
+				<div ng-cloak ng-show="pricingError !== undefined">
+					<div class="alert alert-danger" role="alert">
+						{{ pricingError }}
+					</div>
+					<br style="clear:both;"/>
+				</div>
+				<!-- price lock status -->
+				<div ng-cloak ng-show="countdown > 0 && userTyping === false && checkingPrice === false && enteredAmount > 0 && pricingError === undefined">
+					<div class="alert alert-info" role="alert">
+						<strong>Price is locked</strong> for {{ countdown | readableTime }}
+					</div>
+					<br style="clear:both;"/>
+				</div>
+				
+				<!-- account id -->
+				<div class="row">
+					<div class="col-xs-12">	
+						<input class="form-control" type="text" ng-model="account_id2" placeholder="Account #" autocomplete="off" />
+					</div>
+				</div>
+
+				<br style="clear:both;"/>
+
+				<!-- recaptcha -->
+				<div class="row">
+					<div class="col-xs-12">	
+						<div
+						vc-recaptcha
+						theme="'light'"
+						key="recaptchaKey"
+						on-create="setWidgetId2(widgetId)"
+						on-success="setResponse2(response)"></div>
+					</div>
+				</div>
+
+				<br style="clear:both"/>
+
+				<!-- credit card or bitcoins -->
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="btn-group">
+		        			<label class="btn btn-default" ng-model="paymentType" btn-radio="'USD'">
+		        				<i class="fa fa-credit-card"></i>&nbsp;Card
+		        			</label>
+		        			<label class="btn btn-default" ng-model="paymentType" btn-radio="'BTC'">
+		        				<i class="fa fa-bitcoin"></i>&nbsp;Bitcoin
+		        			</label>
+		    			</div>
+					</div>
+				</div>
+
+				<br style="clear:both;"/>
+
+				<!-- stripe form -->
+				<form ng-cloak ng-show="paymentType === 'USD'" stripe-form="handleStripe" name="myForm">
+
+					<!-- card number -->
+					<input type="text" class="form-control" ng-model="number" placeholder="Card number" autocomplete="off" payments-validate="card" payments-format="card" payments-type-model="type" ng-class="myForm.number.$card.type"/>
+
+					<!-- expiration number -->
+					<input type="text" class="form-control" ng-model="expiry" placeholder="Expiry" autocomplete="off" payments-validate="expiry" payments-format="expiry" />
+
+					<!-- name on card -->
+					<input type="text" ng-model="name" placeholder="Name on card" autocomplete="off" class="form-control">
+
+					<!-- cvc -->
+					<input type="text" class="form-control" ng-model="cvc" placeholder="CVC" autocomplete="off" payments-validate="cvc" payments-format="cvc" payments-type-model="type"/>
+
+					<!-- receipt email address -->
+					<input type="email" ng-model="email_address_card" placeholder="Receipt email address" autocomplete="off" class="form-control">
+
+					<br style="clear:both;"/>
+
+					<div ng-cloak ng-show="declineReason !== undefined" class="alert alert-danger" role="alert">
+						<strong>Decline Reason: </strong>{{ declineReason }}
+					</div>
+
+					<br style="clear:both;"/>
+
+					<!-- submission button -->
+					<button
+					ng-disabled="purchase.active.disabled == true"
+					ng-class="purchase.active.class"
+					class="btn btn-block"
+					type="submit">
+						<i ng-class="purchase.active.icon" class="fa"></i>&nbsp;{{ purchase.active.title }}
+					</button>
+
+				</form>
+
+				<!-- btc form -->
+				<form ng-cloak ng-show="paymentType === 'BTC'" ng-submit="btcContinue()">
+
+					<!-- receipt email address -->
+					<input type="email" ng-model="email_address_bitcoin" placeholder="Receipt email address" autocomplete="off" class="form-control">
+
+					<br style="clear:both;"/>
+
+					<!-- submission button -->
+					<button
+					ng-disabled="purchaseBtc.active.disabled == true"
+					ng-class="purchaseBtc.active.class"
+					class="btn btn-block"
+					type="submit">
+						<i ng-class="purchaseBtc.active.icon" class="fa"></i>&nbsp;{{ purchaseBtc.active.title }}
+					</button>
+				</form>
+			</div>
+
+			<!-- Display Inbound Address for BTC -->
+			<div ng-cloak ng-show="receiver !== undefined && countdown > 0">
+
+				<!-- page title -->
+				<div class="row">
+					<div class="col-xs-12">
+
+						<!-- title -->
+						<h1>Send BTC Payment</h1>
+
+						<!-- please send XXX -->
+						<p>
+							Send <i class="fa fa-btc"></i> <strong>{{ receiver.bitcoin_amount }}</strong> BTC to <em>{{ receiver.inbound_address }}</em>
+						</p>
+
+						<!-- time remaining to fulfill -->
+						You have <strong>{{ countdown | readableTime }}</strong> remaining to fulfill this order.
+					</div>
+				</div>
+
+				<br style="clear:both;"/>
+
+				<!-- bitcoins sent button -->
+				<div class="row">
+					<div class="col-xs-12">
+						<!-- submission button -->
+						<a
+						ng-disabled="confirmBtc.active.disabled == true"
+						ng-class="confirmBtc.active.class"
+						class="btn btn-block"
+						ng-click="btcConfirm()">
+							<i ng-class="confirmBtc.active.icon" class="fa"></i>&nbsp;{{ confirmBtc.active.title }}
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
