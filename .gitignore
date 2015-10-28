@@ -17,7 +17,9 @@
 # to fit your needs!
 ################################################
 
-
+api/models/Globals.js
+logs/access.log
+logs/error.log
 
 
 ################################################
