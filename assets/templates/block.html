@@ -1,16 +1,13 @@
-<!-- BLOCK CHAIN PAGE -->
-<div ng-cloak ng-show="page === 'block'">
-	<h2>Process Block-Chain</h2>
-	<form ng-submit="processBlockChainCtrl.submit()">
-		<label for="block">Block Chain</label>
-		<textarea ng-model="blockChain" class="form-control" id="block"></textarea>
-		<!-- submission button -->
-		<button
-		ng-disabled="block.active.disabled == true"
-		ng-class="block.active.class"
-		class="btn btn-block"
-		type="submit">
-			<i ng-class="block.active.icon" class="fa"></i>&nbsp;{{ block.active.title }}
-		</button>
-	</form>
-</div>
+<h2>Process Block-Chain</h2>
+<form ng-submit="submit()">
+	<label for="block">Block Chain</label>
+	<textarea ng-model="blockChain" class="form-control" id="block"></textarea>
+	<button
+	ng-disabled="block.active.disabled == true"
+	ng-class="block.active.class"
+	class="btn btn-block"
+	type="submit">
+	<i ng-class="block.active.icon" class="fa"></i>&nbsp;
+	{{ block.active.title }}
+</button>
+</form>

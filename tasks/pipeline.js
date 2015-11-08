@@ -28,6 +28,8 @@ var jsFilesToInject = [
   'js/dependencies/sails.io.js',
   'js/dependencies/jquery-1.11.3.min.js',
   'js/dependencies/angular/angular.min.js',
+  'js/dependencies/angular/angular.bootstrap.js',
+  'js/dependencies/angular/angular-route.js',
   'js/dependencies/angular/angular.rb.js',
   'js/dependencies/angular/angular-payments.min.js',
   'js/dependencies/angular/ui-bootstrap-tpls-0.13.3.min.js',

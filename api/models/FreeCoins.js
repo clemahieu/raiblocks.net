@@ -31,39 +31,86 @@ module.exports = {
 	
 	processRequest: function(parameters, callback) {
 
-		RecaptchaService.verifyParameters(parameters, function(err, response) {
+		// ensure all parameters are fulfilled
+		FreeCoinsService.verifyParameters(parameters, function(err, response) {
+			console.log('FreeCoinsService');
 
-			// all params passed!
+			// parameters passed!
 			if(!err) {
 
-				// make sure the recaptcha response is valid (talk to Google quick)
-				RecaptchaService.verifyResponse(parameters.response, function(err, response) {
+				console.log(response);
 
-					// recaptcha passed!
+				// ensure the recaptcha response is valid by asking Google
+				RecaptchaService.verifyResponse(parameters.response, function(err, response) {
+					console.log('RecaptchaService');
+
 					if(!err) {
 
-						PricingService.verifyPrice(1, function(err, response) {
+						// recaptcha passed!
+						if(response.success) {
 
-							// price verification passed!
-							if(!err) {
-								callback(null, response);
-							} else {
-								callback(err, null); // price check failed!
-							}
+							console.log(response);
 
-						});
+							// check the price for a single unit to determine if it's free or not
+							PricingService.checkPrice(1, function(err, response) {
+								console.log('PricingService');
+
+								// price verification passed!
+								if(!err) {
+
+									console.log(response);
+
+									// check if the account is valid
+									ValidateAccountService.validate(parameters.account, function(err, response) {
+										console.log('ValidateAccountService');
+
+										if(!err) {
+
+											console.log(response);
+
+											// send coins to account
+											FreeCoinsService.send(parameters, function(err, response) {
+												console.log('FreeCoinsService');
+
+												if(!err) {
+
+													console.log(response);
+													callback(null, response);
+
+												} else {
+
+													console.log(err);
+													callback(null, err); // free coins were not sent
+												}
+											});
+
+										} else {
+											console.log(err);
+											callback(err, null); // account validation failed!
+										}
+									});
+
+								} else {
+									console.log(err);
+									callback(err, null); // price check failed!
+								}
+							});
+						} else {
+							console.log(response);
+							callback(response, null); // recaptcha failed!
+						}
 
 					} else {
+						console.log(err);
 						callback(err, null); // recaptcha failed!
 					}
-
 				});
 
 			} else {
+				console.log(err);
 				callback(err, null); // one or more params failed!
 			}
 		});
-
 	}
-};
 
+};

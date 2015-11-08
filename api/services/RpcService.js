@@ -1,5 +1,7 @@
 /**
  * RaiBlock's RPC Service
+ *
+ * Performs an HTTP request to the RB RPC
  */
 
 module.exports = {
@@ -8,36 +10,29 @@ module.exports = {
 
 		var 
 		http = require('http'),
-		querystring = require('querystring');
-		//postData = querystring.stringify(postData);
+		postData = JSON.stringify(postData);
 
 		// request options
 		var options = {
-			host : Globals.rpcHost,
+			hostname : Globals.rpcHost,
 			port : Globals.rpcPort,
 			method : 'POST',
 			headers : { 
-				'content-type': 'application/json', 
+				'Content-Type': 'application/json',
+				'Content-Length': postData.length,
 				'Accept': '*/*' 
 			}
 		};
-
-		console.log(options);
 
 		// define request
 		var req = http.request(options, function(res) {
 
 		    // response data
-		    res.on('data', function(d) {
-		    	
-		    	var response = d.toString();
-		    	console.log(response);
+		    res.on('data', function(response) {
+		    	response = JSON.parse(response.toString());
 		    	callback(null, response);
-
 		    });
 		});
-
-		console.log(postData);
 
 		// send post daaderta in request
 		req.write(postData);

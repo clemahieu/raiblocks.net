@@ -19,9 +19,14 @@ module.exports = {
 
 			// request processed!
 			if(!err) {
-				return res.send(response);
+				//console.log('free coins response');
+				//console.log(response);
+				response.message = 'claimed';
+				res.send(response);
 			} else {
-				return res.send(err);
+				//console.log('free coins error');
+				//console.log(err);
+				res.send(err);
 			}
 		});
 
